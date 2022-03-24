@@ -2,6 +2,7 @@ package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AccountService;
 import com.techelevator.tenmo.services.AuthenticationService;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class App {
 
@@ -103,9 +105,6 @@ public class App {
         } else {
             consoleService.printErrorMessage();
         }
-
-
-
 	}
 
 	private void viewTransferHistory() {
@@ -117,11 +116,11 @@ public class App {
 		// TODO Auto-generated method stub
         // OPTIONAL!
 
-		
 	}
 
 	private void sendBucks() {
-		Transfer transferEnteredByUser = consoleService.promptForTransfer();
+        List<User> userList = accountService.getUsers();
+		Transfer transferEnteredByUser = consoleService.promptForTransfer(userList);
         accountService.transfer(transferEnteredByUser);
 //        Transfer transferFromApi = accountService.transfer(transferEnteredByUser);
 //        if (transferFromApi == null) {

@@ -4,6 +4,7 @@ import com.techelevator.tenmo.dao.AccountDao;
 import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.tenmo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -28,10 +29,6 @@ public class AccountController {
         this.userDao = userDao;
     }
 
-//    @RequestMapping(path = "", method = RequestMethod.GET)
-//    public BigDecimal getBalance(@PathVariable int account_id){
-//        return accountDao.getBalance(account_id);
-//    }
 
     @RequestMapping(method = RequestMethod.GET)
     public BigDecimal getBalance(Principal principal){
@@ -39,12 +36,12 @@ public class AccountController {
         return accountDao.getBalance(userId);
     }
 
-//    @RequestMapping(path = "/details", method = RequestMethod.GET)
-//    public Account getDetails(Principal principal){
-////      Go to database to fetch stuff
-//        Account account = new Account(BigDecimal.valueOf(100.00), 5, 6);
-//        return account;
-//    }
+    @RequestMapping(path = "/user", method = RequestMethod.GET)
+    public List<User> getUsers() {
+        //TODO get list of users
+        return userDao.findAll();
+    }
+
 
     @RequestMapping(path = "/transfer", method = RequestMethod.POST)
     public void transferMoney(@RequestBody Transfer transfer, Principal principal){

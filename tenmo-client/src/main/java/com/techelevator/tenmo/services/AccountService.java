@@ -1,6 +1,7 @@
 package com.techelevator.tenmo.services;
 
 import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.tenmo.model.User;
 import com.techelevator.util.BasicLogger;
 import org.springframework.http.*;
 import org.springframework.http.HttpHeaders;
@@ -8,6 +9,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class AccountService {
@@ -33,6 +36,18 @@ public class AccountService {
             BasicLogger.log(e.getMessage());
         }
         return balance;
+    }
+
+    public List<User> getUsers(){
+        List<User> userList = null;
+        try {
+            ResponseEntity<User[]> response = restTemplate.getForEntity(API_BASE_URL+"/user", User[].class);
+            User[] userArray = response.getBody();
+            userList = Arrays.asList(userArray);
+        } catch (Exception e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return userList;
     }
 
     public Transfer transfer(Transfer transfer){

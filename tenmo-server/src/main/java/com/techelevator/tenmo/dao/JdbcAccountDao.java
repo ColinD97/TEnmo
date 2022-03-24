@@ -32,18 +32,12 @@ public class JdbcAccountDao implements AccountDao{
 
         String sql2 = "UPDATE account SET balance = balance + ? WHERE user_id = ?;";
         jdbcTemplate.update(sql2, transferAmount, receiverId);
-
-//        String sql3 = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
-//                        "VALUES (?, ?, ?, ?, ?) RETURNING transfer_id";
-//        int transferId = jdbcTemplate.update(sql3, typeId, statusId, userId, receiverId, transferAmount);
         String sql3 = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
                 " VALUES ((select transfer_type_id from transfer_type where transfer_type_desc = ?), " +
                 "(select transfer_status_id from transfer_status where transfer_status_desc = ?), " +
                 "(select account_id from account where user_id = ?), "+
                 "(select account_id from account where user_id = ?), ?); ";
         int transferId = jdbcTemplate.update(sql3, typeId, statusId, userId, receiverId, transferAmount);
-
-        // SELECT
     }
 
     @Override
@@ -53,10 +47,8 @@ public class JdbcAccountDao implements AccountDao{
                 "join transfer_status on transfer.transfer_status_id = transfer_status.transfer_status_id\n" +
                 "join account on transfer.account_from = account.account_id\n" +
                 "where account_from = (select account_id from account where user_id = ?);";
-
         List<Transfer> listOfTransfers = new ArrayList<>();
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, user_id);
-
         while(result.next()){
             Transfer transfer = mapRowToTransfer(result);
             listOfTransfers.add(transfer);
@@ -71,7 +63,6 @@ public class JdbcAccountDao implements AccountDao{
                 "join account on transfer.account_from = account.account_id\n" +
                 "WHERE transfer_id = ?;";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, transferId);
-
         Transfer transfer = new Transfer();
         if (result.next()){
             transfer = mapRowToTransfer(result);

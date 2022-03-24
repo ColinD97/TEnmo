@@ -2,9 +2,11 @@ package com.techelevator.tenmo.services;
 
 
 import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleService {
@@ -94,7 +96,8 @@ public class ConsoleService {
         System.out.println("Your current account balance is: $" + balance);
     }
 
-    public Transfer promptForTransfer(){
+    public Transfer promptForTransfer(List<User> userList){
+
         Transfer transfer = new Transfer();
         System.out.println(
                 "-------------------------------------------\n" +
@@ -107,6 +110,9 @@ public class ConsoleService {
                 "\n" +
                 "Enter ID of user you are sending to (0 to cancel): \n"
         );
+        for (User user:userList) {
+            System.out.println("User: "+user);
+        }
         transfer.setReceiverId(scanner.nextInt());
 
         System.out.println("Enter amount: ");
