@@ -39,7 +39,9 @@ public class AccountController {
     @RequestMapping(path = "/user", method = RequestMethod.GET)
     public List<User> getUsers() {
         //TODO get list of users
-        return userDao.findAll();
+        List<User> userList = userDao.findAll();
+
+        return userList;
     }
 
 

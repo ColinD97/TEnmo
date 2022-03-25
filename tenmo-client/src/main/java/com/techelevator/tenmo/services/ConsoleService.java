@@ -99,20 +99,30 @@ public class ConsoleService {
     public Transfer promptForTransfer(List<User> userList){
 
         Transfer transfer = new Transfer();
-        System.out.println(
+//        System.out.println(
+//                "-------------------------------------------\n" +
+//                "Users\n" +
+//                "ID         Name\n" +
+//                "-------------------------------------------\n" +
+//                "1004       asdf\n" +
+//                "1005       jkl\n" +
+//                "---------\n" +
+//                "\n" +
+//                "Enter ID of user you are sending to (0 to cancel): \n"
+//        );
+            System.out.println(
                 "-------------------------------------------\n" +
                 "Users\n" +
                 "ID         Name\n" +
-                "-------------------------------------------\n" +
-                "1004       asdf\n" +
-                "1005       jkl\n" +
+                "-------------------------------------------");
+        for (User user:userList) {
+            System.out.println(user.getId() + "       "+ user.getUsername());
+        }
+        System.out.println(
                 "---------\n" +
                 "\n" +
                 "Enter ID of user you are sending to (0 to cancel): \n"
         );
-        for (User user:userList) {
-            System.out.println("User: "+user);
-        }
         transfer.setReceiverId(scanner.nextInt());
 
         System.out.println("Enter amount: ");

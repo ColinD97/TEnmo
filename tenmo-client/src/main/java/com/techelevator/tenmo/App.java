@@ -120,6 +120,13 @@ public class App {
 
 	private void sendBucks() {
         List<User> userList = accountService.getUsers();
+        for (User user:userList) {
+            if(user.equals(currentUser.getUser())){
+                //userList.remove(user);
+                System.out.println(user);
+            }
+            System.out.println("not current user: "+user);
+        }
 		Transfer transferEnteredByUser = consoleService.promptForTransfer(userList);
         accountService.transfer(transferEnteredByUser);
 //        Transfer transferFromApi = accountService.transfer(transferEnteredByUser);
