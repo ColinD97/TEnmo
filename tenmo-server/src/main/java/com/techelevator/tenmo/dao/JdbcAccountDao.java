@@ -26,18 +26,17 @@ public class JdbcAccountDao implements AccountDao{
     }
 
     @Override
-    public void updateBalance(String typeId, String statusId, int userId, int receiverId, BigDecimal transferAmount) {
+    public void updateBalance(int typeId, int statusId, int userId, int receiverId, BigDecimal transferAmount, String note) {
         String sql = "UPDATE account SET balance = balance - ? WHERE user_id = ?;";
         jdbcTemplate.update(sql, transferAmount, userId);
 
         String sql2 = "UPDATE account SET balance = balance + ? WHERE user_id = ?;";
         jdbcTemplate.update(sql2, transferAmount, receiverId);
-        String sql3 = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
-                " VALUES ((select transfer_type_id from transfer_type where transfer_type_desc = ?), " +
-                "(select transfer_status_id from transfer_status where transfer_status_desc = ?), " +
+        String sql3 = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount, note) " +
+                " VALUES (?, ?, " +
                 "(select account_id from account where user_id = ?), "+
-                "(select account_id from account where user_id = ?), ?); ";
-        int transferId = jdbcTemplate.update(sql3, typeId, statusId, userId, receiverId, transferAmount);
+                "(select account_id from account where user_id = ?), ?, ?); ";
+        int transferId = jdbcTemplate.update(sql3, typeId, statusId, userId, receiverId, transferAmount, note);
     }
 
     @Override
@@ -73,8 +72,8 @@ public class JdbcAccountDao implements AccountDao{
     private Transfer mapRowToTransfer(SqlRowSet rs) {
         Transfer transfer = new Transfer();
         transfer.setTransferId(rs.getInt("transfer_id"));
-        transfer.setType(rs.getString("transfer_type_desc"));
-        transfer.setStatus(rs.getString(("transfer_status_desc")));
+        transfer.setType(rs.getInt("transfer_type_desc"));
+        transfer.setStatus(rs.getInt(("transfer_status_desc")));
         transfer.setReceiverId(rs.getInt("user_id"));
         transfer.setTransferAmount(rs.getBigDecimal("amount"));
         return transfer;

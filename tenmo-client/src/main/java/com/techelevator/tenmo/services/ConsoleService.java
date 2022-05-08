@@ -124,7 +124,8 @@ public class ConsoleService {
                 "Enter ID of user you are sending to (0 to cancel): \n"
         );
         transfer.setReceiverId(scanner.nextInt());
-
+        transfer.setType("Send");
+        transfer.setStatus("Approved");
         System.out.println("Enter amount: ");
         transfer.setTransferAmount(scanner.nextBigDecimal());
 

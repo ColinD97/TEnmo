@@ -15,7 +15,7 @@ import java.util.List;
 
 public class App {
 
-    private static final String API_BASE_URL = "http://localhost:8080/";
+    private static final String API_BASE_URL = "http://localhost:3000/";
 
     private final ConsoleService consoleService = new ConsoleService();
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
@@ -122,19 +122,19 @@ public class App {
         List<User> userList = accountService.getUsers();
         for (User user:userList) {
             if(user.equals(currentUser.getUser())){
-                //userList.remove(user);
+//                userList.remove(user);
                 System.out.println(user);
             }
             System.out.println("not current user: "+user);
         }
 		Transfer transferEnteredByUser = consoleService.promptForTransfer(userList);
         accountService.transfer(transferEnteredByUser);
-//        Transfer transferFromApi = accountService.transfer(transferEnteredByUser);
-//        if (transferFromApi == null) {
-//            consoleService.printErrorMessage();
-//        } else {
-//            System.out.printf("SUCCESS WOOO");
-//        }
+        Transfer transferFromApi = accountService.transfer(transferEnteredByUser);
+        if (transferFromApi == null) {
+            consoleService.printErrorMessage();
+        } else {
+            System.out.printf("SUCCESS WOOO");
+        }
 	}
 
 	private void requestBucks() {

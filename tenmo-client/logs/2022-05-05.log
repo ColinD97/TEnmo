@@ -1,0 +1,13 @@
+2022-05-05T18:36:15.8582667 404 Not Found: [<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Error</title>
+</head>
+<body>
+<pre>Cannot POST /login</pre>
+</body>
+</html>
+]
+2022-05-05T18:46:13.5714444 500 : [{"timestamp":"2022-05-05T23:46:13.553+00:00","status":500,"error":"Internal Server Error","message":"PreparedStatementCallback; SQL [INSERT INTO transfer (transfer_type_id, transfer_status_id, account... (933 bytes)]
+2022-05-05T18:46:13.5864572 500 : [{"timestamp":"2022-05-05T23:46:13.585+00:00","status":500,"error":"Internal Server Error","message":"PreparedStatementCallback; SQL [INSERT INTO transfer (transfer_type_id, transfer_status_id, account... (933 bytes)]

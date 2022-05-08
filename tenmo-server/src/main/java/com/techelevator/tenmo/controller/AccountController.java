@@ -14,6 +14,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/account")
 public class AccountController {
@@ -48,7 +49,7 @@ public class AccountController {
     @RequestMapping(path = "/transfer", method = RequestMethod.POST)
     public void transferMoney(@RequestBody Transfer transfer, Principal principal){
         int userId = userDao.findIdByUsername(principal.getName());
-        accountDao.updateBalance(transfer.getType(), transfer.getStatus(), userId, transfer.getReceiverId(), transfer.getTransferAmount());
+        accountDao.updateBalance(transfer.getType(), transfer.getStatus(), userId, transfer.getReceiverId(), transfer.getTransferAmount(), transfer.getNote());
     }
 
     @RequestMapping(path = "/transfer", method = RequestMethod.GET)

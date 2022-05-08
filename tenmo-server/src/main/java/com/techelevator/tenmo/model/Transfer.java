@@ -5,10 +5,11 @@ import java.math.BigDecimal;
 public class Transfer {
 
     private int transferId;
-    private String type;
-    private String status;
+    private int type;
+    private int status;
     private int receiverId;
     private BigDecimal transferAmount;
+    private String note;
 
     public int getTransferId() {
         return transferId;
@@ -17,17 +18,17 @@ public class Transfer {
         this.transferId = transferId;
     }
 
-    public String getType() {
+    public int getType() {
         return type;
     }
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -45,6 +46,11 @@ public class Transfer {
         this.transferAmount = transferAmount;
     }
 
+    public String getNote() {
+        return note;
+    }
 
-
+    public void setNote(String note) {
+        this.note = note;
+    }
 }
