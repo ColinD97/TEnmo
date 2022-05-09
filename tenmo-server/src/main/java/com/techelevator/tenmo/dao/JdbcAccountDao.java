@@ -41,10 +41,8 @@ public class JdbcAccountDao implements AccountDao{
 
     @Override
     public List<Transfer> getTransfers(int user_id) {
-        String sql = "select transfer_id, transfer_type_desc, transfer_status_desc, user_id, amount from transfer\n" +
-                "join transfer_type on transfer.transfer_type_id = transfer_type.transfer_type_id\n" +
-                "join transfer_status on transfer.transfer_status_id = transfer_status.transfer_status_id\n" +
-                "join account on transfer.account_from = account.account_id\n" +
+        String sql = "select transfer_id, transfer_type_id, transfer_status_id, user_id, amount, note from transfer\n" +
+                "join account on transfer.account_to = account.account_id\n" +
                 "where account_from = (select account_id from account where user_id = ?);";
         List<Transfer> listOfTransfers = new ArrayList<>();
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, user_id);
@@ -56,10 +54,8 @@ public class JdbcAccountDao implements AccountDao{
     }
 
     public Transfer getTransferById(int transferId){
-        String sql = "select transfer_id, transfer_type_desc, transfer_status_desc, user_id, amount from transfer\n" +
-                "join transfer_type on transfer.transfer_type_id = transfer_type.transfer_type_id\n" +
-                "join transfer_status on transfer.transfer_status_id = transfer_status.transfer_status_id\n" +
-                "join account on transfer.account_from = account.account_id\n" +
+        String sql = "select transfer_id, transfer_type_id, transfer_status_id, user_id, amount, note from transfer\n" +
+                "join account on transfer.account_to = account.account_id\n" +
                 "WHERE transfer_id = ?;";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, transferId);
         Transfer transfer = new Transfer();
@@ -72,10 +68,11 @@ public class JdbcAccountDao implements AccountDao{
     private Transfer mapRowToTransfer(SqlRowSet rs) {
         Transfer transfer = new Transfer();
         transfer.setTransferId(rs.getInt("transfer_id"));
-        transfer.setType(rs.getInt("transfer_type_desc"));
-        transfer.setStatus(rs.getInt(("transfer_status_desc")));
+        transfer.setType(rs.getInt("transfer_type_id"));
+        transfer.setStatus(rs.getInt(("transfer_status_id")));
         transfer.setReceiverId(rs.getInt("user_id"));
         transfer.setTransferAmount(rs.getBigDecimal("amount"));
+        transfer.setNote(rs.getString("note"));
         return transfer;
     }
 
