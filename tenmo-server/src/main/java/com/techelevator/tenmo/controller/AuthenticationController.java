@@ -48,6 +48,11 @@ public class AuthenticationController {
         return new LoginResponse(jwt, user);
     }
 
+    @RequestMapping(value = "/username/{userId}", method = RequestMethod.GET)
+    public String getUsername(@PathVariable int userId) {
+        return userDao.findUsernameById(userId);
+    }
+
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public void register(@Valid @RequestBody RegisterUserDTO newUser) {

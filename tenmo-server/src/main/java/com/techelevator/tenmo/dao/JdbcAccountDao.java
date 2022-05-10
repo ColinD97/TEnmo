@@ -6,6 +6,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,16 +33,17 @@ public class JdbcAccountDao implements AccountDao{
 
         String sql2 = "UPDATE account SET balance = balance + ? WHERE user_id = ?;";
         jdbcTemplate.update(sql2, transferAmount, receiverId);
-        String sql3 = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount, note) " +
+        LocalDateTime currentDate = LocalDateTime.now();
+        String sql3 = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount, note, date_logged) " +
                 " VALUES (?, ?, " +
                 "(select account_id from account where user_id = ?), "+
-                "(select account_id from account where user_id = ?), ?, ?); ";
-        int transferId = jdbcTemplate.update(sql3, typeId, statusId, userId, receiverId, transferAmount, note);
+                "(select account_id from account where user_id = ?), ?, ?,?); ";
+        int transferId = jdbcTemplate.update(sql3, typeId, statusId, userId, receiverId, transferAmount, note, currentDate);
     }
 
     @Override
     public List<Transfer> getTransfers(int user_id) {
-        String sql = "select transfer_id, transfer_type_id, transfer_status_id, user_id, amount, note from transfer\n" +
+        String sql = "select transfer_id, transfer_type_id, transfer_status_id, user_id, amount, note, date_logged from transfer\n" +
                 "join account on transfer.account_to = account.account_id\n" +
                 "where account_from = (select account_id from account where user_id = ?);";
         List<Transfer> listOfTransfers = new ArrayList<>();
@@ -54,7 +56,7 @@ public class JdbcAccountDao implements AccountDao{
     }
 
     public Transfer getTransferById(int transferId){
-        String sql = "select transfer_id, transfer_type_id, transfer_status_id, user_id, amount, note from transfer\n" +
+        String sql = "select transfer_id, transfer_type_id, transfer_status_id, user_id, amount, note, date_logged from transfer\n" +
                 "join account on transfer.account_to = account.account_id\n" +
                 "WHERE transfer_id = ?;";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, transferId);
@@ -73,6 +75,7 @@ public class JdbcAccountDao implements AccountDao{
         transfer.setReceiverId(rs.getInt("user_id"));
         transfer.setTransferAmount(rs.getBigDecimal("amount"));
         transfer.setNote(rs.getString("note"));
+        transfer.setDate_logged(rs.getTimestamp("date_logged").toLocalDateTime());
         return transfer;
     }
 

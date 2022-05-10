@@ -55,6 +55,7 @@ CREATE TABLE transfer (
 	account_to int NOT NULL,
 	amount decimal(13, 2) NOT NULL,
 	note varchar(250),
+	date_logged timestamp(0) without time zone,
 	CONSTRAINT PK_transfer PRIMARY KEY (transfer_id),
 	CONSTRAINT FK_transfer_account_from FOREIGN KEY (account_from) REFERENCES account (account_id),
 	CONSTRAINT FK_transfer_account_to FOREIGN KEY (account_to) REFERENCES account (account_id),

@@ -1,15 +1,18 @@
 package com.techelevator.tenmo.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public class Transfer {
 
     private int transferId;
     private int type;
     private int status;
+    private int senderId;
     private int receiverId;
     private BigDecimal transferAmount;
     private String note;
+    private LocalDateTime date_logged;
 
     public int getTransferId() {
         return transferId;
@@ -32,6 +35,14 @@ public class Transfer {
         this.status = status;
     }
 
+    public int getSenderId() {
+        return senderId;
+    }
+
+    public void setSenderId(int senderId) {
+        this.senderId = senderId;
+    }
+
     public int getReceiverId() {
         return receiverId;
     }
@@ -52,5 +63,13 @@ public class Transfer {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public LocalDateTime getDate_logged() {
+        return date_logged;
+    }
+
+    public void setDate_logged(LocalDateTime date_logged) {
+        this.date_logged = date_logged;
     }
 }
