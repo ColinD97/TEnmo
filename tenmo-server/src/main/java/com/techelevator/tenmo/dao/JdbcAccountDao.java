@@ -66,6 +66,13 @@ public class JdbcAccountDao implements AccountDao{
             TransferDTO transfer = mapRowToTransferDTO(result);
             listOfTransfers.add(transfer);
         }
+        sql = "select transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount, note, date_logged from transfer\n" +
+                "where account_to = (select account_id from account where user_id = ?);";
+        result = jdbcTemplate.queryForRowSet(sql, user_id);
+        while(result.next()){
+            TransferDTO transfer = mapRowToTransferDTO(result);
+            listOfTransfers.add(transfer);
+        }
         for (TransferDTO item: listOfTransfers) {
             sql = "SELECT tenmo_user.user_id FROM tenmo_user JOIN account ON tenmo_user.user_id = account.user_id WHERE account_id = ?;";
             int tempId = jdbcTemplate.queryForObject(sql, Integer.class, item.getAccount_to());
